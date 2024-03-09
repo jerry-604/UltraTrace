@@ -6,6 +6,7 @@ from . import util
 import parselmouth
 from .util.logging import *
 from .widgets import Header
+from ultratrace.modules.textgrid import TextGrid
 
 import argparse
 import os
@@ -18,10 +19,12 @@ class Frame(wx.Frame):
 	#def __init__(self, parent, title):
 	#	super(Frame, self).__init__(parent, title=title)
 	def __init__(self, *a, **k):
-		wx.Frame.__init__(self, *a, **k)
+		wx.Frame.__init__(self, *a, **k, )
 
 
-		self.SetPosition((2000, 10220))  # Replace x and y with the desired coordinates
+		self.SetSize((200, 600))  # Set the initial size of the main frame
+		# self.Centre(wx.BOTH)  # Center on screen
+		# self.Show()
 
 		info( 'initialising UltraTrace' )
 		self.preinitialise()
@@ -33,6 +36,7 @@ class Frame(wx.Frame):
 		
 		info( ' - initialising modules' )
 		self.initialiserest()
+		self.CentreOnScreen()
 
 	def preinitialise(self):
 
@@ -56,10 +60,63 @@ class Frame(wx.Frame):
 
 		self.Trace = modules.Trace(self)
 		# self.Dicom = modules.Dicom(self)
-		self.Audio = modules.Playback(self)
+		# self.Audio = modules.Playback(self)
 		# self.TextGrid = modules.TextGrid(self)
 		# self.TextGrid = modules.TextGrid(self)
+		self.TextGrid = TextGrid(self)
 		self.Spectrogram = modules.Spectrogram(self)
+
+        
+		tiers = [
+			# First tier with sentences
+			[(0, 1, "A quick brown fox jumps over the lazy dog near the riverbank."),
+			(1, 2, "Bright vixens jump; dozy fowl quack."),
+			(2, 3, "Quick zephyrs blow, vexing daft Jim."),
+			(3, 4, "Sphinx of black quartz, judge my vow.")],
+
+			# Second tier with words from each sentence
+			[(0, 0.2, "A"), (0.2, 0.4, "quick"), (0.4, 0.6, "brown"), (0.6, 0.8, "fox"), (0.8, 1, "jumps"),
+			(1, 1.125, "over"), (1.125, 1.25, "the"), (1.25, 1.375, "lazy"), (1.375, 1.5, "dog"), (1.5, 1.625, "near"), (1.625, 1.75, "the"), (1.75, 1.875, "riverbank"),
+			(2, 2.1, "Bright"), (2.1, 2.2, "vixens"), (2.2, 2.3, "jump;"), (2.3, 2.4, "dozy"), (2.4, 2.5, "fowl"), (2.5, 2.6, "quack"),
+			(3, 3.1, "Quick"), (3.1, 3.2, "zephyrs"), (3.2, 3.3, "blow,"), (3.3, 3.4, "vexing"), (3.4, 3.5, "daft"), (3.5, 3.6, "Jim"),
+			(4, 4.1, "Sphinx"), (4.1, 4.2, "of"), (4.2, 4.3, "black"), (4.3, 4.4, "quartz,"), (4.4, 4.5, "judge"), (4.5, 4.6, "my"), (4.6, 4.7, "vow")],
+
+			# Third tier with vowels from each word
+			[(0, 0.05, "A"), (0.2, 0.25, "ui"), (0.4, 0.45, "o"), (0.6, 0.65, "o"), (0.8, 0.85, "u"),
+			(1, 1.06, "o"), (1.125, 1.18, "e"), (1.25, 1.3, "a"), (1.375, 1.43, "o"), (1.5, 1.56, "ea"), (1.625, 1.68, "e"), (1.75, 1.8, "iea"),
+			(2, 2.05, "i"), (2.1, 2.15, "ie"), (2.2, 2.25, "u;"), (2.3, 2.35, "o"), (2.4, 2.45, "o"), (2.5, 2.55, "ua"),
+			(3, 3.05, "ui"), (3.1, 3.15, "e"), (3.2, 3.25, "o,"), (3.3, 3.35, "ei"), (3.4, 3.45, "a"), (3.5, 3.55, "i"),
+			(4, 4.05, "i"), (4.1, 4.15, "o"), (4.2, 4.25, "a"), (4.3, 4.35, "ua,"), (4.4, 4.45, "ue"), (4.5, 4.55, "y"), (4.6, 4.65, "o")]
+		]
+
+
+
+		
+		self.TextGrid.SetTiers(tiers)
+		mainSizer = wx.BoxSizer(wx.VERTICAL)
+		mainSizer.AddSpacer(350)  # Space from the top of the frame to the Spectrogram
+
+        # Create a horizontal sizer for the Spectrogram to add padding
+		spectrogram_sizer = wx.BoxSizer(wx.HORIZONTAL)
+		spectrogram_sizer.AddSpacer(300)  # Left padding for the Spectrogram
+		spectrogram_sizer.Add(self.Spectrogram, proportion=1, flag=wx.EXPAND | wx.ALL, border=2)
+		spectrogram_sizer.AddSpacer(1)  # Right padding for the Spectrogram
+
+        # Add the spectrogram_sizer to the mainSizer
+		mainSizer.Add(spectrogram_sizer, proportion=1, flag=wx.EXPAND | wx.ALL, border=2)
+
+        # Create a horizontal sizer for the TextGrid to add padding
+		horizontal_sizer = wx.BoxSizer(wx.HORIZONTAL)
+		horizontal_sizer.AddSpacer(403)  # Left padding for the TextGrid
+		horizontal_sizer.Add(self.TextGrid, proportion=1, flag=wx.EXPAND | wx.ALL, border=2)
+		horizontal_sizer.AddSpacer(1)  # Right padding for the TextGrid
+
+        # Add the horizontal_sizer to the mainSizer
+		mainSizer.Add(horizontal_sizer, proportion=1, flag=wx.EXPAND | wx.ALL, border=2)
+		mainSizer.AddSpacer(50)  # Space at the bottom of the frame
+
+		self.SetSizer(mainSizer)
+
 		# self.Spectrogram = modules.Spectrogram(self)
 		# self.Search = modules.Search(self)
 

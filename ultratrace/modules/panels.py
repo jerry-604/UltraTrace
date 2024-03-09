@@ -25,7 +25,7 @@ class Panel_root(wx.Panel):
         # controls_and_us.Add(self.app.ultrasoundPanel, 1, wx.EXPAND) #yellow area
 
         root_sizer = wx.BoxSizer(wx.VERTICAL)
-        root_sizer.Add(controls_and_us, 3, wx.EXPAND, border=100)
+        root_sizer.Add(controls_and_us, 3, wx.EXPAND, border=5)
         # root_sizer.Add(self.app.audioTGPanel,7, wx.EXPAND, 10) #green area
 
         self.SetSizer(root_sizer)

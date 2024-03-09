@@ -34,7 +34,7 @@ class Spectrogram(wx.Panel):
 
         self.app = parent
 
-        self.figure = Figure([7, 1])
+        self.figure = Figure([8, 1])
         self.figure.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
 
         self.axes = self.figure.add_subplot(111, frameon=False, facecolor="red")
@@ -60,11 +60,12 @@ class Spectrogram(wx.Panel):
         self.wl_box = FS.FloatSpin(self, -1, min_val=0, max_val=1, increment=0.0005, value=0, agwStyle=FS.FS_LEFT)
         self.dyn_range_box = FS.FloatSpin(self, -1, min_val=0, max_val=10000, increment=10, value=0, agwStyle=FS.FS_LEFT)
 
+        self.snd = parselmouth.Sound("/Users/jeremiah/Documents/ultrasound-data-example/20150629171639.flac")
         self.doDefaults()
         ### automatic actions on change
-        # self.axis_ceil_box.Bind(wx.EVT_SPINCTRL, self.drawSpectrogram)
-        # self.wl_box.Bind(wx.EVT_SPINCTRL, self.drawSpectrogram)
-        # self.dyn_range_box.Bind(wx.EVT_SPINCTRL, self.drawSpectrogram)
+        self.axis_ceil_box.Bind(wx.EVT_SPINCTRL, self.drawSpectrogram)
+        self.wl_box.Bind(wx.EVT_SPINCTRL, self.drawSpectrogram)
+        self.dyn_range_box.Bind(wx.EVT_SPINCTRL, self.drawSpectrogram)
 
         # Create buttons
         self.default_btn = wx.Button(self, label='Standards')
@@ -81,10 +82,10 @@ class Spectrogram(wx.Panel):
         vertical_sizer.Add(self.apply_btn, 0, wx.EXPAND | wx.ALL, 5)
 
         # Add the vertical sizer and the canvas to the horizontal sizer
-        horizontal_sizer.Add((300,0))
+        # horizontal_sizer.Add((300,0))
         horizontal_sizer.Add(vertical_sizer, 0, wx.EXPAND | wx.ALL, 5)
         horizontal_sizer.Add(self.canvas, 1, wx.EXPAND | wx.ALL, 5)
-        root_vertical_sizer.Add((0,400))
+        # root_vertical_sizer.Add((0,400))
         root_vertical_sizer.Add(horizontal_sizer)
 
         # Set the horizontal sizer as the main sizer for the panel
@@ -95,7 +96,6 @@ class Spectrogram(wx.Panel):
         # Bind event handlers or configure the canvas as needed
         # self.canvas.Bind(wx.EVT_LEFT_DOWN, self.jumpToFrame)
 
-        self.snd = parselmouth.Sound("/Users/jeremiah/Documents/ultrasound-data-example/20150629171639.flac")
         
         # Compute the spectrogram and intensity once in the constructor
         self.intensity = self.snd.to_intensity()
@@ -172,6 +172,7 @@ class Spectrogram(wx.Panel):
         self.axis_ceil_box.SetValue(5000.0)
         self.wl_box.SetValue(0.005)
         self.dyn_range_box.SetValue(90.0)
+        self.drawSpectrogram()
 
     def restoreDefaults(self, event):
         self.doDefaults()

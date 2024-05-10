@@ -67,32 +67,33 @@ class Frame(wx.Frame):
 		self.Spectrogram = modules.Spectrogram(self)
 
         
-		tiers = [
-			# First tier with sentences
-			[(0, 1, "A quick brown fox jumps over the lazy dog near the riverbank."),
-			(1, 2, "Bright vixens jump; dozy fowl quack."),
-			(2, 3, "Quick zephyrs blow, vexing daft Jim."),
-			(3, 4, "Sphinx of black quartz, judge my vow.")],
+		# tiers = [
+		# 	# First tier with sentences
+		# 	[(0, 1, "A quick brown fox jumps over the lazy dog near the riverbank."),
+		# 	(1, 2, "Bright vixens jump; dozy fowl quack."),
+		# 	(2, 3, "Quick zephyrs blow, vexing daft Jim."),
+		# 	(3, 4, "Sphinx of black quartz, judge my vow.")],
 
-			# Second tier with words from each sentence
-			[(0, 0.2, "A"), (0.2, 0.4, "quick"), (0.4, 0.6, "brown"), (0.6, 0.8, "fox"), (0.8, 1, "jumps"),
-			(1, 1.125, "over"), (1.125, 1.25, "the"), (1.25, 1.375, "lazy"), (1.375, 1.5, "dog"), (1.5, 1.625, "near"), (1.625, 1.75, "the"), (1.75, 1.875, "riverbank"),
-			(2, 2.1, "Bright"), (2.1, 2.2, "vixens"), (2.2, 2.3, "jump;"), (2.3, 2.4, "dozy"), (2.4, 2.5, "fowl"), (2.5, 2.6, "quack"),
-			(3, 3.1, "Quick"), (3.1, 3.2, "zephyrs"), (3.2, 3.3, "blow,"), (3.3, 3.4, "vexing"), (3.4, 3.5, "daft"), (3.5, 3.6, "Jim"),
-			(4, 4.1, "Sphinx"), (4.1, 4.2, "of"), (4.2, 4.3, "black"), (4.3, 4.4, "quartz,"), (4.4, 4.5, "judge"), (4.5, 4.6, "my"), (4.6, 4.7, "vow")],
+		# 	# Second tier with words from each sentence
+		# 	[(0, 0.2, "A"), (0.2, 0.4, "quick"), (0.4, 0.6, "brown"), (0.6, 0.8, "fox"), (0.8, 1, "jumps"),
+		# 	(1, 1.125, "over"), (1.125, 1.25, "the"), (1.25, 1.375, "lazy"), (1.375, 1.5, "dog"), (1.5, 1.625, "near"), (1.625, 1.75, "the"), (1.75, 1.875, "riverbank"),
+		# 	(2, 2.1, "Bright"), (2.1, 2.2, "vixens"), (2.2, 2.3, "jump;"), (2.3, 2.4, "dozy"), (2.4, 2.5, "fowl"), (2.5, 2.6, "quack"),
+		# 	(3, 3.1, "Quick"), (3.1, 3.2, "zephyrs"), (3.2, 3.3, "blow,"), (3.3, 3.4, "vexing"), (3.4, 3.5, "daft"), (3.5, 3.6, "Jim"),
+		# 	(4, 4.1, "Sphinx"), (4.1, 4.2, "of"), (4.2, 4.3, "black"), (4.3, 4.4, "quartz,"), (4.4, 4.5, "judge"), (4.5, 4.6, "my"), (4.6, 4.7, "vow")],
 
-			# Third tier with vowels from each word
-			[(0, 0.05, "A"), (0.2, 0.25, "ui"), (0.4, 0.45, "o"), (0.6, 0.65, "o"), (0.8, 0.85, "u"),
-			(1, 1.06, "o"), (1.125, 1.18, "e"), (1.25, 1.3, "a"), (1.375, 1.43, "o"), (1.5, 1.56, "ea"), (1.625, 1.68, "e"), (1.75, 1.8, "iea"),
-			(2, 2.05, "i"), (2.1, 2.15, "ie"), (2.2, 2.25, "u;"), (2.3, 2.35, "o"), (2.4, 2.45, "o"), (2.5, 2.55, "ua"),
-			(3, 3.05, "ui"), (3.1, 3.15, "e"), (3.2, 3.25, "o,"), (3.3, 3.35, "ei"), (3.4, 3.45, "a"), (3.5, 3.55, "i"),
-			(4, 4.05, "i"), (4.1, 4.15, "o"), (4.2, 4.25, "a"), (4.3, 4.35, "ua,"), (4.4, 4.45, "ue"), (4.5, 4.55, "y"), (4.6, 4.65, "o")]
-		]
+		# 	# Third tier with vowels from each word
+		# 	[(0, 0.05, "A"), (0.2, 0.25, "ui"), (0.4, 0.45, "o"), (0.6, 0.65, "o"), (0.8, 0.85, "u"),
+		# 	(1, 1.06, "o"), (1.125, 1.18, "e"), (1.25, 1.3, "a"), (1.375, 1.43, "o"), (1.5, 1.56, "ea"), (1.625, 1.68, "e"), (1.75, 1.8, "iea"),
+		# 	(2, 2.05, "i"), (2.1, 2.15, "ie"), (2.2, 2.25, "u;"), (2.3, 2.35, "o"), (2.4, 2.45, "o"), (2.5, 2.55, "ua"),
+		# 	(3, 3.05, "ui"), (3.1, 3.15, "e"), (3.2, 3.25, "o,"), (3.3, 3.35, "ei"), (3.4, 3.45, "a"), (3.5, 3.55, "i"),
+		# 	(4, 4.05, "i"), (4.1, 4.15, "o"), (4.2, 4.25, "a"), (4.3, 4.35, "ua,"), (4.4, 4.45, "ue"), (4.5, 4.55, "y"), (4.6, 4.65, "o")]
+		# ]
 
 
 
 		
-		self.TextGrid.SetTiers(tiers)
+		# self.TextGrid.SetTiers(tiers)
+		self.TextGrid.LoadTextGrid("/Users/jeremiah/Documents/ultrasound-data-example/20150629171639.TextGrid")
 		mainSizer = wx.BoxSizer(wx.VERTICAL)
 		mainSizer.AddSpacer(350)  # Space from the top of the frame to the Spectrogram
 
